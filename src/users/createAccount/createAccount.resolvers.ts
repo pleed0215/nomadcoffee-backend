@@ -36,6 +36,7 @@ export default {
           ...(location && { location }),
           ...(githubUsername && { githubUsername }),
         };
+
         const user = await prisma.user.create({
           data,
         });
