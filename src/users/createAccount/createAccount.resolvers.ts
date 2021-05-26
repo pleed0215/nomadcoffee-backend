@@ -37,6 +37,7 @@ const resolvers: Resolvers = {
           ...(location && { location }),
           ...(githubUsername && { githubUsername }),
         };
+
         const user = await prisma.user.create({
           data,
         });
