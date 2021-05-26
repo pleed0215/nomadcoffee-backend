@@ -1,3 +1,4 @@
+import { getUser } from "./users/users.utils";
 require("dotenv").config();
 import { ApolloServer } from "apollo-server";
 import { schema } from "./schema";
@@ -7,7 +8,7 @@ const server = new ApolloServer({
   schema,
   context: async ({ req }) => {
     return {
-      loggedInUser: null,
+      loggedInUser: await getUser(req.headers["x-jwt"]),
       prisma,
     };
   },

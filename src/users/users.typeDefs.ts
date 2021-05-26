@@ -14,6 +14,6 @@ export default gql`
     updatedAt: String
   }
   type Query {
-    seeUser(id: Int!): User
+    seeProfile(id: Int!): User
   }
 `;

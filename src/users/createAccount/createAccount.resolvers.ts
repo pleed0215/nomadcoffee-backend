@@ -1,7 +1,8 @@
+import { Resolvers } from "./../../types.d";
 import * as bcrypt from "bcrypt";
 import { prisma } from "../../prisma";
 
-export default {
+const resolvers: Resolvers = {
   Mutation: {
     createAccount: async (
       _,
@@ -53,3 +54,5 @@ export default {
     },
   },
 };
+
+export default resolvers;
