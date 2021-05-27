@@ -35,7 +35,6 @@ export const loginOnlyProtector: ProtectedResolver = (
 ) => {
   return function (root, args, context, info) {
     if (!context.loggedInUser) {
-      console.log(info);
       const isQuery = info.operation.operation === "query";
 
       if (isQuery) {
