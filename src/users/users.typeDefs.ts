@@ -10,10 +10,20 @@ export default gql`
     location: String
     githubUsername: String
 
+    """
+     Followers based on offset pagination.
+    """
+    followers(page: Int): [User]
+    """
+     Followings based on offset pagination.
+    """
+    followings(page: Int): [User]
+
     createdAt: String
     updatedAt: String
   }
+
   type Query {
-    seeProfile(id: Int!): User
+    seeUser(id: Int!): User
   }
 `;
