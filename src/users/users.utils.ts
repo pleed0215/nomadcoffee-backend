@@ -4,21 +4,25 @@ import { prisma } from "../prisma";
 
 export const SECRET_DEV = "8afd3f57-5bb7-459a-94fa-c8b588a28f72";
 
-export const getUser = async (token) => {
+export const getUser = async (token: string) => {
   try {
     if (!token) {
       return null;
     }
-
-    const decoded = jwt.verify(
-      token,
+    // typescript jwt.verify type error 관련..
+    // https://stackoverflow.com/questions/50735675/typescript-jwt-verify-cannot-access-data
+    type TokenType = {
+      id: string;
+    };
+    const key =
       process.env.NODE_ENV === "production"
-        ? process.env.SECRET_KEY
-        : SECRET_DEV
-    );
+        ? process.env.SECRET_KEY!
+        : SECRET_DEV;
+    const decoded = jwt.verify(token, key) as TokenType;
+
     if (typeof decoded === "object" && decoded.hasOwnProperty("id")) {
       const user = await prisma.user.findUnique({
-        where: { id: decoded["id"] },
+        where: { id: +decoded["id"] },
       });
       return user;
     } else {

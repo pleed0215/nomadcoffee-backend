@@ -1,4 +1,5 @@
-import { PrismaClient, User } from ".prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { User } from "prisma";
 
 type Context = {
   loggedInUser: User | null;
@@ -17,3 +18,20 @@ export type Resolvers = {
     [key: string]: Resolver;
   };
 };
+
+declare module "http" {
+  interface IncomingHttpHeaders {
+    "x-jwt"?: string;
+  }
+}
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      SECRET_KEY: string;
+      PORT: string;
+      AWS_ACCESS?: string;
+      AWS_SECRET?: string;
+    }
+  }
+}

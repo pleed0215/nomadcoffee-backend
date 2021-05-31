@@ -1,6 +1,7 @@
 import { PAGE_SIZE } from "../../prisma";
 import { Resolvers, Resolver } from "./../../types.d";
 import { WhereUserInput } from "prisma";
+
 const searchUsers: Resolver = async (_, { term, lastId }, { prisma }) => {
   try {
     const whereUserInput: WhereUserInput = {
