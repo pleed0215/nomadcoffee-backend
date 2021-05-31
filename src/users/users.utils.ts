@@ -23,6 +23,17 @@ export const getUser = async (token: string) => {
     if (typeof decoded === "object" && decoded.hasOwnProperty("id")) {
       const user = await prisma.user.findUnique({
         where: { id: +decoded["id"] },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          name: true,
+          location: true,
+          avatarURL: true,
+          githubUsername: true,
+          createdAt: true,
+          updatedAt: true,
+        },
       });
       return user;
     } else {
