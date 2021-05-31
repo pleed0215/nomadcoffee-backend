@@ -44,6 +44,7 @@ const resolvers: Resolvers = {
   Query: {
     seeUser: (_, { id }, { prisma }) =>
       prisma.user.findUnique({ where: { id } }),
+    me: loginOnlyProtector((_, __, { loggedInUser }) => loggedInUser),
   },
 };
 
