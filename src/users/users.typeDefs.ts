@@ -23,14 +23,26 @@ export default gql`
     Are you logged in user?
     """
     isMe: Boolean
+    """
+    Total number of user followed
+    """
     totalFollowers: Int
+    """
+    Total number of user following
+    """
     totalFollowings: Int
 
+    """
+    Am I following you?
+    """
     isFollowing: Boolean
+    """
+    Are you following me?
+    """
     isFollowed: Boolean
 
-    createdAt: String
-    updatedAt: String
+    createdAt: GraphQLDateTime
+    updatedAt: GraphQLDateTime
   }
 
   type Query {

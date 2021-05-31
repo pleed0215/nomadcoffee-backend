@@ -18,7 +18,9 @@ const resolvers: Resolvers = {
         //...(lastId && { cursor: { id: lastId } }),
         orderBy: { id: "asc" },
       }),
-    isMe: ({ id }, _, { loggedInUser }) => loggedInUser.id === id,
+    isMe: loginOnlyProtector(
+      ({ id }, _, { loggedInUser }) => loggedInUser.id === id
+    ),
     totalFollowers: ({ id }, _, { prisma }) =>
       prisma.user.count({ where: { followings: { some: { id } } } }),
     totalFollowings: ({ id }, _, { prisma }) =>
