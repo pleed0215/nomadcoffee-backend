@@ -1,3 +1,4 @@
+import { processSlugs } from "./shops/shops.utils";
 import { getUser } from "./users/users.utils";
 require("dotenv").config();
 import { ApolloServer } from "apollo-server";
@@ -16,6 +17,12 @@ const server = new ApolloServer({
 
 const PORT = +process.env.PORT || 4000;
 
-server.listen(PORT).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
+server
+  .listen(PORT)
+  .then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  })
+  .catch((e) => {
+    console.error(e);
+  })
+  .finally(async () => await prisma.$disconnect());

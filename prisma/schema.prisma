@@ -23,6 +23,43 @@ model User {
   followers User[]    @relation("FollowRelation")
   followings User[]   @relation("FollowRelation")
 
+  shop      CoffeeShop?
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Category {
+    id     Int  @id @default(autoincrement())
+    name   String
+    // unique를 뺄지 말지 고민..
+    slug   String @unique
+    shops  CoffeeShop[] @relation("CategoryRelation")
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+model CoffeeShopPhoto {
+    id     Int  @id @default(autoincrement())
+    url    String
+    shop   CoffeeShop @relation(references: [id], fields:[shopId])
+    shopId  Int
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+model CoffeeShop {
+    id         Int  @id @default(autoincrement())
+    name       String
+    lat        Float
+    lng        Float
+    user       User @relation(references:[id], fields:[userId])
+    userId     Int
+    photos     CoffeeShopPhoto[]
+    categories Category[] @relation("CategoryRelation")
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 }
