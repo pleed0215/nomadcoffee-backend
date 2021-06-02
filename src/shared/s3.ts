@@ -118,15 +118,16 @@ export const removeFile = async (url: string) => {
         const result = await new AWS.S3()
           .deleteObject({
             Bucket: BUCKET_NAME,
-            Key: key,
+            Key: key.slice(1),
           })
           .promise();
-
+          
         return {
           ok: true,
         };
       } else {
         // 해당 버킷이 아니면.. 일단 좀 이상하긴해도 큰 문제는 아니니까 ok리턴.
+        
         return {
           ok: true,
         };

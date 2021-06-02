@@ -46,7 +46,7 @@ const removeCategoryFromShop: Resolver = async (
       where: { id },
       rejectOnNotFound: true,
     });
-    if (shop.userId !== loggedInUser) {
+    if (shop.userId !== loggedInUser.id) {
       throw new Error("Permission Error: Cannot edit not yours.");
     }
     const category = await prisma.category.findFirst({
