@@ -34,7 +34,7 @@ const addPhotosToShop: Resolver = async (
       }
     }
     const updated = await new Promise<
-      CoffeeShop | { e: any; uploaded: UploadResult[] }
+      CoffeeShop | { e: any; uploaded: string[] }
     >((resolve, reject) => {
       prisma.coffeeShop
         .update({
@@ -106,12 +106,12 @@ const removePhotoFromShop: Resolver = async (
       throw new Error("Permission Error: Cannot edit not yours.");
     }
     const result = await removeFile(photo.url);
-    if (result.ok) {      
+    if (result.ok) {
       await prisma.coffeeShop.update({
         where: { id },
         data: { photos: { delete: { id: photoId } } },
       });
-      
+
       return {
         ok: true,
       };
