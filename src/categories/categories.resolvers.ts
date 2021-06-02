@@ -6,6 +6,9 @@ const shops: Resolver = ({ id }, { lastId }, { prisma }) =>
   prisma.coffeeShop.findMany({
     take: PAGE_SIZE,
     skip: lastId ? 1 : 0,
+    include: {
+      photos: true,
+    },
     ...(lastId && { cursor: { id: lastId } }),
     where: { categories: { some: { id } } },
   });
