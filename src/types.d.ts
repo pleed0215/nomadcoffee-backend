@@ -32,6 +32,7 @@ declare global {
       PORT: string;
       AWS_ACCESS?: string;
       AWS_SECRET?: string;
+      NODE_ENV: "production" | "development" | "test";
     }
   }
 }
