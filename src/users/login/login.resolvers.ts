@@ -14,7 +14,12 @@ const resolvers: Resolvers = {
 
         const canAuth = await bcrypt.compare(password, user.password);
         if (canAuth) {
-          const token = await jwt.sign({ id: user.id }, SECRET_DEV);
+          const token = await jwt.sign(
+            { id: user.id },
+            process.env.NODE_ENV === "production"
+              ? process.env.SECRET_KEY
+              : SECRET_DEV
+          );
           return {
             ok: true,
             token,
