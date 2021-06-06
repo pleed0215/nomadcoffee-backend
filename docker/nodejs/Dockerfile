@@ -4,6 +4,7 @@ WORKDIR /home/app
 ADD . /home/app/
 
 RUN apk --no-cache add --virtual builds-deps build-base python
-RUN npm install --legacy-peer-deps
+RUN npm install -g yarn
+RUN yarn install
 
-CMD npm run container
+CMD yarn run container
