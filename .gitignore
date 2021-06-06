@@ -1,3 +1,5 @@
+.docker.env
+docker/postgres
 # Logs
 logs
 *.log
