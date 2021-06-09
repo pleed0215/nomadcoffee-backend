@@ -30,8 +30,20 @@ const firstPhotoUrl: Resolver = async ({ id }, _, { prisma }) => {
   }
 };
 
-const isMine: Resolver = async ({ user }, _, { prisma, loggedInUser }) =>
-  user.id === loggedInUser.id;
+const isMine: Resolver = async ({ id }, _, { prisma, loggedInUser }) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { shops: { some: { id } } },
+    });
+    if (user) {
+      return user.id === loggedInUser.id;
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+};
 
 const photos: Resolver = async ({ id }, { lastId }, { prisma }) =>
   prisma.coffeeShopPhoto.findMany({
@@ -40,6 +52,9 @@ const photos: Resolver = async ({ id }, { lastId }, { prisma }) =>
     skip: lastId ? 1 : 0,
     ...(lastId && { cursor: { id: lastId } }),
   });
+
+const user: Resolver = async ({ id }, _, { prisma }) =>
+  prisma.user.findFirst({ where: { shops: { some: { id } } } });
 
 const resolvers: Resolvers = {
   Query: {
@@ -50,6 +65,7 @@ const resolvers: Resolvers = {
     firstPhotoUrl,
     photos,
     isMine: loginOnlyProtector(isMine),
+    user,
   },
 };
 
