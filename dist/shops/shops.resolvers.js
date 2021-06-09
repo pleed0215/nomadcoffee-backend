@@ -60,15 +60,9 @@ var seeCoffeeShop = function (_, _a, _b) {
 var seeCoffeeShops = function (_, _a, _b) {
     var lastId = _a.lastId;
     var prisma = _b.prisma;
-    return prisma.coffeeShop.findMany({
-        take: prisma_1.PAGE_SIZE,
-        skip: lastId ? 1 : 0,
-        cursor: { id: lastId },
-        orderBy: { createdAt: "desc" },
-        include: {
+    return prisma.coffeeShop.findMany(__assign(__assign({ take: prisma_1.PAGE_SIZE, skip: lastId ? 1 : 0 }, (lastId && { cursor: { id: lastId } })), { orderBy: { createdAt: "desc" }, include: {
             categories: true,
-        },
-    });
+        } }));
 };
 var firstPhotoUrl = function (_a, _, _b) {
     var id = _a.id;
@@ -94,11 +88,33 @@ var firstPhotoUrl = function (_a, _, _b) {
     });
 };
 var isMine = function (_a, _, _b) {
-    var user = _a.user;
+    var id = _a.id;
     var prisma = _b.prisma, loggedInUser = _b.loggedInUser;
-    return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_c) {
-        return [2 /*return*/, user.id === loggedInUser.id];
-    }); });
+    return __awaiter(void 0, void 0, void 0, function () {
+        var user_1, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    _d.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, prisma.user.findFirst({
+                            where: { shops: { some: { id: id } } },
+                        })];
+                case 1:
+                    user_1 = _d.sent();
+                    if (user_1) {
+                        return [2 /*return*/, user_1.id === loggedInUser.id];
+                    }
+                    else {
+                        return [2 /*return*/, null];
+                    }
+                    return [3 /*break*/, 3];
+                case 2:
+                    _c = _d.sent();
+                    return [2 /*return*/, null];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
 };
 var photos = function (_a, _b, _c) {
     var id = _a.id;
@@ -110,6 +126,13 @@ var photos = function (_a, _b, _c) {
         });
     });
 };
+var user = function (_a, _, _b) {
+    var id = _a.id;
+    var prisma = _b.prisma;
+    return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_c) {
+        return [2 /*return*/, prisma.user.findFirst({ where: { shops: { some: { id: id } } } })];
+    }); });
+};
 var resolvers = {
     Query: {
         seeCoffeeShop: seeCoffeeShop,
@@ -119,6 +142,7 @@ var resolvers = {
         firstPhotoUrl: firstPhotoUrl,
         photos: photos,
         isMine: users_utils_1.loginOnlyProtector(isMine),
+        user: user,
     },
 };
 exports.default = resolvers;

@@ -54,17 +54,26 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
         server = new apollo_server_express_1.ApolloServer({
             schema: schema_1.schema,
             context: function (_a) {
-                var req = _a.req;
+                var req = _a.req, connection = _a.connection;
                 return __awaiter(void 0, void 0, void 0, function () {
-                    var _b;
-                    return __generator(this, function (_c) {
-                        switch (_c.label) {
+                    var token, _b;
+                    var _c;
+                    return __generator(this, function (_d) {
+                        switch (_d.label) {
                             case 0:
-                                _b = {};
-                                return [4 /*yield*/, users_utils_1.getUser(req.headers["x-jwt"])];
-                            case 1: return [2 /*return*/, (_b.loggedInUser = _c.sent(),
-                                    _b.prisma = prisma_1.prisma,
-                                    _b)];
+                                token = req ? req.headers["x-jwt"] : connection === null || connection === void 0 ? void 0 : connection.context["x-jwt"];
+                                _c = {};
+                                if (!token) return [3 /*break*/, 2];
+                                return [4 /*yield*/, users_utils_1.getUser(token)];
+                            case 1:
+                                _b = _d.sent();
+                                return [3 /*break*/, 3];
+                            case 2:
+                                _b = null;
+                                _d.label = 3;
+                            case 3: return [2 /*return*/, (_c.loggedInUser = _b,
+                                    _c.prisma = prisma_1.prisma,
+                                    _c)];
                         }
                     });
                 });
@@ -77,6 +86,7 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
         app.use("/static", express.static("/uploads"));
         app.use(cors());
         server.applyMiddleware({ app: app });
+        server.installSubscriptionHandlers(httpServer);
         httpServer.listen({ port: PORT, url: "/graphql" }, function () {
             console.log("\uD83D\uDE80 Server ready at " + PORT);
         });
