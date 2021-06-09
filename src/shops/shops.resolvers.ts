@@ -1,4 +1,5 @@
 import { PAGE_SIZE } from "../prisma";
+import { loginOnlyProtector } from "../users/users.utils";
 import { Resolvers, Resolver } from "./../types.d";
 
 const seeCoffeeShop: Resolver = (_, { id }, { prisma }) =>
@@ -29,6 +30,9 @@ const firstPhotoUrl: Resolver = async ({ id }, _, { prisma }) => {
   }
 };
 
+const isMine: Resolver = async ({ user }, _, { prisma, loggedInUser }) =>
+  user.id === loggedInUser.id;
+
 const photos: Resolver = async ({ id }, { lastId }, { prisma }) =>
   prisma.coffeeShopPhoto.findMany({
     where: { shopId: id },
@@ -45,6 +49,7 @@ const resolvers: Resolvers = {
   CoffeeShop: {
     firstPhotoUrl,
     photos,
+    isMine: loginOnlyProtector(isMine),
   },
 };
 

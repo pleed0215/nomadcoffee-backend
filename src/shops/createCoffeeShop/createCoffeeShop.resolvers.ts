@@ -35,7 +35,8 @@ const createCoffeeShop: Resolver = async (
 
     // CoffeeShop - User 1:1 관계로 설정해 놓았음.
     // 이미 CoffeShop 관계가 존재하면, throw error.
-    if (
+    // 혹시나 해서 1:n 관계로 바꿈.. 2021.6.9
+    /*if (
       Boolean(
         await prisma.coffeeShop.findFirst({
           where: { userId: loggedInUser.id },
@@ -43,7 +44,8 @@ const createCoffeeShop: Resolver = async (
       )
     ) {
       throw new Error("Already Exist");
-    }
+    }*/
+
     // Category가 적어도 한 개 있어야 함.
     if (categories.length === 0) {
       throw new Error("Input Error: Need cateogires to create coffee shop.");

@@ -23,7 +23,7 @@ model User {
   followers User[]    @relation("FollowRelation")
   followings User[]   @relation("FollowRelation")
 
-  shop      CoffeeShop?
+  shops      CoffeeShop[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

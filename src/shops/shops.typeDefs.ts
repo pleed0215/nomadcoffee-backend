@@ -12,6 +12,11 @@ export default gql`
 
     firstPhotoUrl: String
 
+    """
+    Is my shop?
+    """
+    isMine: Boolean
+
     createdAt: GraphQLDateTime
     updatedAt: GraphQLDateTime
   }
