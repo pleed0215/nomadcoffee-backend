@@ -60,7 +60,9 @@ var resolvers = {
                         case 2:
                             canAuth = _c.sent();
                             if (!canAuth) return [3 /*break*/, 4];
-                            return [4 /*yield*/, jwt.sign({ id: user.id }, users_utils_1.SECRET_DEV)];
+                            return [4 /*yield*/, jwt.sign({ id: user.id }, process.env.NODE_ENV === "production"
+                                    ? process.env.SECRET_KEY
+                                    : users_utils_1.SECRET_DEV)];
                         case 3:
                             token = _c.sent();
                             return [2 /*return*/, {

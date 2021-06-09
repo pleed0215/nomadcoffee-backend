@@ -59,16 +59,11 @@ var createCoffeeShop = function (_, _a, _b) {
     var name = _a.name, categories = _a.categories, lat = _a.lat, lng = _a.lng, photos = _a.photos;
     var prisma = _b.prisma, loggedInUser = _b.loggedInUser;
     return __awaiter(void 0, void 0, void 0, function () {
-        var _c, slugsInput_1, uploaded_1, _i, photos_1, photo, result, _d, created, e_1;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var slugsInput_1, uploaded_1, _i, photos_1, photo, result, _c, created, e_1;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
-                    _e.trys.push([0, 8, , 9]);
-                    _c = Boolean;
-                    return [4 /*yield*/, prisma.coffeeShop.findFirst({
-                            where: { userId: loggedInUser.id },
-                        })];
-                case 1:
+                    _d.trys.push([0, 7, , 8]);
                     /* TODO Step
                         [v] Processing slug
                             - 소문자여야함.
@@ -86,26 +81,33 @@ var createCoffeeShop = function (_, _a, _b) {
                     */
                     // CoffeeShop - User 1:1 관계로 설정해 놓았음.
                     // 이미 CoffeShop 관계가 존재하면, throw error.
-                    if (_c.apply(void 0, [_e.sent()])) {
-                        throw new Error("Already Exist");
-                    }
+                    // 혹시나 해서 1:n 관계로 바꿈.. 2021.6.9
+                    /*if (
+                      Boolean(
+                        await prisma.coffeeShop.findFirst({
+                          where: { userId: loggedInUser.id },
+                        })
+                      )
+                    ) {
+                      throw new Error("Already Exist");
+                    }*/
                     // Category가 적어도 한 개 있어야 함.
                     if (categories.length === 0) {
                         throw new Error("Input Error: Need cateogires to create coffee shop.");
                     }
                     slugsInput_1 = shops_utils_1.processSlugs(categories);
                     uploaded_1 = [];
-                    if (!(photos && photos.length > 0)) return [3 /*break*/, 6];
+                    if (!(photos && photos.length > 0)) return [3 /*break*/, 5];
                     _i = 0, photos_1 = photos;
-                    _e.label = 2;
-                case 2:
-                    if (!(_i < photos_1.length)) return [3 /*break*/, 6];
+                    _d.label = 1;
+                case 1:
+                    if (!(_i < photos_1.length)) return [3 /*break*/, 5];
                     photo = photos_1[_i];
-                    _d = s3_1.uploadFile;
+                    _c = s3_1.uploadFile;
                     return [4 /*yield*/, photo];
-                case 3: return [4 /*yield*/, _d.apply(void 0, [_e.sent()])];
-                case 4:
-                    result = _e.sent();
+                case 2: return [4 /*yield*/, _c.apply(void 0, [_d.sent()])];
+                case 3:
+                    result = _d.sent();
                     if (result.ok) {
                         if (result.url) {
                             uploaded_1.push(result.url);
@@ -114,11 +116,11 @@ var createCoffeeShop = function (_, _a, _b) {
                     else {
                         throw { e: new Error(result.error), uploaded: uploaded_1 };
                     }
-                    _e.label = 5;
-                case 5:
+                    _d.label = 4;
+                case 4:
                     _i++;
-                    return [3 /*break*/, 2];
-                case 6: return [4 /*yield*/, new Promise(function (resolve, reject) {
+                    return [3 /*break*/, 1];
+                case 5: return [4 /*yield*/, new Promise(function (resolve, reject) {
                         prisma.coffeeShop
                             .create({
                             data: __assign({ name: name,
@@ -144,8 +146,8 @@ var createCoffeeShop = function (_, _a, _b) {
                             reject({ e: e, uploaded: uploaded_1 });
                         });
                     })];
-                case 7:
-                    created = _e.sent();
+                case 6:
+                    created = _d.sent();
                     // id가 들어있다는 의미는 create가 정상적으로 CoffeeShop 레코드를 받았다는 것..
                     // 아니면 에러를 포함하는 것이니.. 에러 처리.
                     if (created.hasOwnProperty("id")) {
@@ -159,9 +161,9 @@ var createCoffeeShop = function (_, _a, _b) {
                         // 만들기에 실패한 경우에는 업로드한 파일들 롤백.
                         throw created;
                     }
-                    return [3 /*break*/, 9];
-                case 8:
-                    e_1 = _e.sent();
+                    return [3 /*break*/, 8];
+                case 7:
+                    e_1 = _d.sent();
                     // 작동 여부 확인 못함..
                     if (e_1.hasOwnProperty("uploaded")) {
                         // 업로드 파일 삭제.
@@ -179,8 +181,8 @@ var createCoffeeShop = function (_, _a, _b) {
                                 error: e_1.message,
                             }];
                     }
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
