@@ -18,9 +18,10 @@ const PORT = +process.env.PORT || 4000;
 const main = async () => {
   const server = new ApolloServer({
     schema,
-    context: async ({ req }) => {
+    context: async ({ req, connection }) => {
+      const token = req ? req.headers["x-jwt"] : connection?.context["x-jwt"];
       return {
-        loggedInUser: await getUser(req.headers["x-jwt"]),
+        loggedInUser: token ? await getUser(token) : null,
         prisma,
       };
     },
@@ -32,6 +33,7 @@ const main = async () => {
   app.use("/static", express.static("/uploads"));
   app.use(cors());
   server.applyMiddleware({ app });
+  server.installSubscriptionHandlers(httpServer);
 
   httpServer.listen({ port: PORT, url: "/graphql" }, () => {
     console.log(`🚀 Server ready at ${PORT}`);
