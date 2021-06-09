@@ -56,7 +56,7 @@ var s3_1 = require("../../shared/s3");
   },
 }),*/
 var createCoffeeShop = function (_, _a, _b) {
-    var name = _a.name, categories = _a.categories, lat = _a.lat, lng = _a.lng, photos = _a.photos;
+    var name = _a.name, categories = _a.categories, lat = _a.lat, lng = _a.lng, photos = _a.photos, address = _a.address;
     var prisma = _b.prisma, loggedInUser = _b.loggedInUser;
     return __awaiter(void 0, void 0, void 0, function () {
         var slugsInput_1, uploaded_1, _i, photos_1, photo, result, _c, created, e_1;
@@ -125,7 +125,8 @@ var createCoffeeShop = function (_, _a, _b) {
                             .create({
                             data: __assign({ name: name,
                                 lat: lat,
-                                lng: lng, categories: {
+                                lng: lng,
+                                address: address, categories: {
                                     connectOrCreate: slugsInput_1,
                                 }, user: {
                                     connect: {

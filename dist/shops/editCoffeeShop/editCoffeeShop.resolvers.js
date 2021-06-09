@@ -51,7 +51,7 @@ var s3_1 = require("../../shared/s3");
 var users_utils_1 = require("../../users/users.utils");
 var shops_utils_1 = require("../shops.utils");
 var editCoffeeShop = function (_, _a, _b) {
-    var id = _a.id, name = _a.name, lat = _a.lat, lng = _a.lng, categories = _a.categories, photos = _a.photos;
+    var id = _a.id, name = _a.name, lat = _a.lat, lng = _a.lng, categories = _a.categories, photos = _a.photos, address = _a.address;
     var prisma = _b.prisma, loggedInUser = _b.loggedInUser;
     return __awaiter(void 0, void 0, void 0, function () {
         var shop, uploaded_1, _i, photos_1, photo, result, _c, data_1, updated, e_1;
@@ -93,7 +93,7 @@ var editCoffeeShop = function (_, _a, _b) {
                     _i++;
                     return [3 /*break*/, 2];
                 case 6:
-                    data_1 = __assign(__assign(__assign(__assign(__assign({}, (name && { name: name })), (lat && { lat: lat })), (lng && { lng: lng })), (categories &&
+                    data_1 = __assign(__assign(__assign(__assign(__assign(__assign({}, (name && { name: name })), (lat && { lat: lat })), (lng && { lng: lng })), (address && { address: address })), (categories &&
                         categories.length > 0 && {
                         categories: {
                             connectOrCreate: shops_utils_1.processSlugs(categories),
