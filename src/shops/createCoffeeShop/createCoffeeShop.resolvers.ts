@@ -13,7 +13,7 @@ import { CoffeeShop } from "@prisma/client";
 
 const createCoffeeShop: Resolver = async (
   _,
-  { name, categories, lat, lng, photos },
+  { name, categories, lat, lng, photos, address },
   { prisma, loggedInUser }
 ) => {
   try {
@@ -80,6 +80,7 @@ const createCoffeeShop: Resolver = async (
             name,
             lat,
             lng,
+            address,
             categories: {
               connectOrCreate: slugsInput,
             },

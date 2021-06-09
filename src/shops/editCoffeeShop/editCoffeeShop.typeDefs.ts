@@ -8,6 +8,7 @@ export default gql`
       categories: [String]
       lat: Float
       lng: Float
+      address: String
       photos: [Upload]
     ): MutationResponse!
   }

@@ -6,7 +6,7 @@ import { processSlugs } from "../shops.utils";
 
 const editCoffeeShop: Resolver = async (
   _,
-  { id, name, lat, lng, categories, photos },
+  { id, name, lat, lng, categories, photos, address },
   { prisma, loggedInUser }
 ) => {
   try {
@@ -51,6 +51,7 @@ const editCoffeeShop: Resolver = async (
       ...(name && { name }),
       ...(lat && { lat }),
       ...(lng && { lng }),
+      ...(address && { address }),
       ...(categories &&
         categories.length > 0 && {
           categories: {

@@ -53,6 +53,7 @@ model CoffeeShopPhoto {
 model CoffeeShop {
     id         Int  @id @default(autoincrement())
     name       String
+    address    String @default("")
     lat        Float
     lng        Float
     user       User @relation(references:[id], fields:[userId])
