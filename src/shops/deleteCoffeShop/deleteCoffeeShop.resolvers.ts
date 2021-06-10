@@ -1,3 +1,4 @@
+import { removeFile } from "./../../shared/s3";
 import { loginOnlyProtector } from "./../../users/users.utils";
 import { Resolvers, Resolver } from "./../../types.d";
 
@@ -9,12 +10,16 @@ const deleteCoffeeShop: Resolver = async (
   try {
     const shop = await prisma.coffeeShop.findUnique({
       where: { id },
+      include: {
+        photos: true,
+      },
       rejectOnNotFound: true,
     });
     if (shop) {
       if (shop.userId !== loggedInUser.id) {
         throw new Error("Permission Error: You cannot delete not yours.");
       }
+      shop.photos.map(async (photo) => await removeFile(photo.url));
       await prisma.coffeeShopPhoto.deleteMany({
         where: {
           shop: {

@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var s3_1 = require("./../../shared/s3");
 var users_utils_1 = require("./../../users/users.utils");
 var deleteCoffeeShop = function (_, _a, _b) {
     var id = _a.id;
@@ -48,6 +49,9 @@ var deleteCoffeeShop = function (_, _a, _b) {
                     _c.trys.push([0, 6, , 7]);
                     return [4 /*yield*/, prisma.coffeeShop.findUnique({
                             where: { id: id },
+                            include: {
+                                photos: true,
+                            },
                             rejectOnNotFound: true,
                         })];
                 case 1:
@@ -56,6 +60,12 @@ var deleteCoffeeShop = function (_, _a, _b) {
                     if (shop.userId !== loggedInUser.id) {
                         throw new Error("Permission Error: You cannot delete not yours.");
                     }
+                    shop.photos.map(function (photo) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, s3_1.removeFile(photo.url)];
+                            case 1: return [2 /*return*/, _a.sent()];
+                        }
+                    }); }); });
                     return [4 /*yield*/, prisma.coffeeShopPhoto.deleteMany({
                             where: {
                                 shop: {
