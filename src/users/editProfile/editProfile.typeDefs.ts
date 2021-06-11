@@ -1,5 +1,10 @@
 import { gql } from "apollo-server";
 export default gql`
+  type AvatarResponse {
+    ok: Boolean!
+    error: String
+    url: String
+  }
   type Mutation {
     editProfile(
       id: Int!
@@ -10,6 +15,6 @@ export default gql`
       location: String
       githubUsername: String
     ): CommonResponse!
-    updateAvatar(file: Upload!): CommonResponse!
+    updateAvatar(file: Upload!): AvatarResponse!
   }
 `;

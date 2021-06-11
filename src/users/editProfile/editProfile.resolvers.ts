@@ -65,6 +65,7 @@ const updateAvatar: Resolver = async (
       });
       return {
         ok: true,
+        url: uploaded.url,
       };
     } else {
       throw new Error("Failed to upload to s3.");
