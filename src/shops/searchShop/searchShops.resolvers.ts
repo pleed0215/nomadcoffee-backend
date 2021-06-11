@@ -8,3 +8,5 @@ const resolvers: Resolvers = {
     searchShopsByUserId,
   },
 };
+
+export default resolvers;
