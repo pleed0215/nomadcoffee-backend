@@ -124,6 +124,7 @@ var updateAvatar = function (_, _a, _b) {
                     _d.sent();
                     return [2 /*return*/, {
                             ok: true,
+                            url: uploaded.url,
                         }];
                 case 4: throw new Error("Failed to upload to s3.");
                 case 5: return [3 /*break*/, 7];
