@@ -116,7 +116,7 @@ const removePhotoFromShop: Resolver = async (
         ok: true,
       };
     } else {
-      throw new Error("Error: " + result.error);
+      throw new Error("Error: removing error");
     }
   } catch (e) {
     return {
