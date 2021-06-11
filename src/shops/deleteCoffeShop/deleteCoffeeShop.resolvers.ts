@@ -16,7 +16,7 @@ const deleteCoffeeShop: Resolver = async (
       rejectOnNotFound: true,
     });
     if (shop) {
-      if (shop.userId !== loggedInUser.id) {
+      if (shop.userId !== loggedInUser?.id) {
         throw new Error("Permission Error: You cannot delete not yours.");
       }
       shop.photos.map(async (photo) => await removeFile(photo.url));

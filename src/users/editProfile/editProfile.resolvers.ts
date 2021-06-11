@@ -2,6 +2,7 @@ import { Resolver, Resolvers } from "./../../types.d";
 import * as bcrypt from "bcrypt";
 
 import { loginOnlyProtector } from "../users.utils";
+import { uploadFile } from "../../shared/s3";
 
 const resolvedFn: Resolver = async (
   _,
@@ -14,7 +15,7 @@ const resolvedFn: Resolver = async (
       rejectOnNotFound: true,
     });
 
-    if (user.id !== loggedInUser.id) {
+    if (user.id !== loggedInUser?.id) {
       throw Error("Permission Error: Cannot Edit other's profile.");
     }
 
@@ -46,9 +47,40 @@ const resolvedFn: Resolver = async (
   }
 };
 
+const updateAvatar: Resolver = async (
+  _,
+  { file },
+  { prisma, loggedInUser }
+) => {
+  try {
+    const uploaded = await uploadFile(await file);
+    if (uploaded.ok && loggedInUser) {
+      await prisma.user.update({
+        where: {
+          id: loggedInUser?.id,
+        },
+        data: {
+          avatarURL: uploaded.url,
+        },
+      });
+      return {
+        ok: true,
+      };
+    } else {
+      throw new Error("Failed to upload to s3.");
+    }
+  } catch (e) {
+    return {
+      ok: false,
+      error: e.message,
+    };
+  }
+};
+
 const resolvers: Resolvers = {
   Mutation: {
     editProfile: loginOnlyProtector(resolvedFn),
+    updateAvatar: loginOnlyProtector(updateAvatar),
   },
 };
 

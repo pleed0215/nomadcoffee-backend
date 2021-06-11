@@ -13,7 +13,7 @@ const addPhotosToShop: Resolver = async (
       where: { id },
       rejectOnNotFound: true,
     });
-    if (shop.userId !== loggedInUser.id) {
+    if (shop.userId !== loggedInUser?.id) {
       throw new Error("Permission Error: Cannot edit not yours.");
     }
     if (!photos || photos.length === 0) {
@@ -102,7 +102,7 @@ const removePhotoFromShop: Resolver = async (
       where: { id },
       rejectOnNotFound: true,
     });
-    if (shop.userId !== loggedInUser.id) {
+    if (shop.userId !== loggedInUser?.id) {
       throw new Error("Permission Error: Cannot edit not yours.");
     }
     const result = await removeFile(photo.url);

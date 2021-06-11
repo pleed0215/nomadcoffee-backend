@@ -36,7 +36,7 @@ const isMine: Resolver = async ({ id }, _, { prisma, loggedInUser }) => {
       where: { shops: { some: { id } } },
     });
     if (user) {
-      return user.id === loggedInUser.id;
+      return user.id === loggedInUser?.id;
     } else {
       return null;
     }

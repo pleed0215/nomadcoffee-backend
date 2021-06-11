@@ -39,7 +39,7 @@ const createCoffeeShop: Resolver = async (
     /*if (
       Boolean(
         await prisma.coffeeShop.findFirst({
-          where: { userId: loggedInUser.id },
+          where: { userId: loggedInUser?.id },
         })
       )
     ) {
@@ -86,7 +86,7 @@ const createCoffeeShop: Resolver = async (
             },
             user: {
               connect: {
-                id: loggedInUser.id,
+                id: loggedInUser?.id,
               },
             },
             ...(uploaded.length > 0 && {

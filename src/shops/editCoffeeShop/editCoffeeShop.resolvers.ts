@@ -27,7 +27,7 @@ const editCoffeeShop: Resolver = async (
       where: { id },
       rejectOnNotFound: true,
     });
-    if (shop.userId !== loggedInUser.id) {
+    if (shop.userId !== loggedInUser?.id) {
       throw new Error("Permission Error: Cannot edit not yours.");
     }
 

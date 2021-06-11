@@ -19,7 +19,7 @@ const resolvers: Resolvers = {
         orderBy: { id: "asc" },
       }),
     isMe: loginOnlyProtector(
-      ({ id }, _, { loggedInUser }) => loggedInUser.id === id
+      ({ id }, _, { loggedInUser }) => loggedInUser?.id === id
     ),
     totalFollowers: ({ id }, _, { prisma }) =>
       prisma.user.count({ where: { followings: { some: { id } } } }),
@@ -29,7 +29,7 @@ const resolvers: Resolvers = {
       async ({ id }, _, { loggedInUser, prisma }) =>
         Boolean(
           await prisma.user.findFirst({
-            where: { id: loggedInUser.id, followings: { some: { id } } },
+            where: { id: loggedInUser?.id, followings: { some: { id } } },
           })
         )
     ),
@@ -37,7 +37,7 @@ const resolvers: Resolvers = {
       async ({ id }, _, { loggedInUser, prisma }) =>
         Boolean(
           await prisma.user.findFirst({
-            where: { id: loggedInUser.id, followers: { some: { id } } },
+            where: { id: loggedInUser?.id, followers: { some: { id } } },
           })
         )
     ),

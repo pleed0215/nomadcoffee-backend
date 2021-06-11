@@ -9,7 +9,7 @@ const toggleFollow: Resolver = async (
 ) => {
   try {
     // 자기자신과 follow relation 실행 안되도록..
-    if (userId === loggedInUser.id) {
+    if (userId === loggedInUser?.id) {
       throw new Error("Cannot perform follow relation with self.");
     }
     // 이미 following / follower 관계인지 ...
@@ -18,7 +18,7 @@ const toggleFollow: Resolver = async (
         id: userId,
         followers: {
           some: {
-            id: loggedInUser.id,
+            id: loggedInUser?.id,
           },
         },
       },
@@ -28,7 +28,7 @@ const toggleFollow: Resolver = async (
     if (alreadyFollowing) {
       await prisma.user.update({
         where: {
-          id: loggedInUser.id,
+          id: loggedInUser?.id,
         },
         data: {
           followings: {
@@ -47,7 +47,7 @@ const toggleFollow: Resolver = async (
       // following 관계가 아님.
       await prisma.user.update({
         where: {
-          id: loggedInUser.id,
+          id: loggedInUser?.id,
         },
         data: {
           followings: {

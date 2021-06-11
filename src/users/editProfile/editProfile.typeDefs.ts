@@ -10,5 +10,6 @@ export default gql`
       location: String
       githubUsername: String
     ): CommonResponse!
+    updateAvatar(file: Upload!): CommonResponse!
   }
 `;
