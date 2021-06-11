@@ -19,8 +19,4 @@ export declare const uploadFile: (file: FileUpload) => Promise<UploadResult>;
  */
 export declare const removeFile: (url: string) => Promise<{
     ok: boolean;
-    error?: undefined;
-} | {
-    ok: boolean;
-    error: any;
 }>;

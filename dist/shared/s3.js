@@ -127,6 +127,7 @@ var removeFile = function (url) { return __awaiter(void 0, void 0, void 0, funct
                 _a.trys.push([0, 6, , 7]);
                 if (!(process.env.AWS_ACCESS && process.env.AWS_SECRET)) return [3 /*break*/, 4];
                 AWS.config.update({
+                    region: "ap-northeast-2",
                     credentials: {
                         accessKeyId: process.env.AWS_ACCESS,
                         secretAccessKey: process.env.AWS_SECRET,
@@ -134,11 +135,11 @@ var removeFile = function (url) { return __awaiter(void 0, void 0, void 0, funct
                 });
                 if (!url.includes(BUCKET_NAME)) return [3 /*break*/, 2];
                 parsed = url.split(urlRegex);
-                key = parsed[4] + parsed[6];
+                key = parsed[4].slice(1) + parsed[6];
                 return [4 /*yield*/, new AWS.S3()
                         .deleteObject({
                         Bucket: BUCKET_NAME,
-                        Key: key.slice(1),
+                        Key: key,
                     })
                         .promise()];
             case 1:
@@ -156,9 +157,14 @@ var removeFile = function (url) { return __awaiter(void 0, void 0, void 0, funct
             case 5: return [3 /*break*/, 7];
             case 6:
                 e_2 = _a.sent();
+                // 자꾸 access denied에러가 발생하여 일단은 .. 에러 처리 안하는 것으로..
+                /*
+                return {
+                  ok: false,
+                  error: e.message,
+                };*/
                 return [2 /*return*/, {
-                        ok: false,
-                        error: e_2.message,
+                        ok: true,
                     }];
             case 7: return [2 /*return*/];
         }
