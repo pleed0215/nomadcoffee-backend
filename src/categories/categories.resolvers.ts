@@ -21,6 +21,7 @@ const seeCategory: Resolver = (_, { slug, lastId }, { prisma }) =>
     },
     include: {
       photos: true,
+      categories: true,
     },
     take: PAGE_SIZE,
     skip: lastId ? 1 : 0,
