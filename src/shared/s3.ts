@@ -105,6 +105,7 @@ export const removeFile = async (url: string) => {
   try {
     if (process.env.AWS_ACCESS && process.env.AWS_SECRET) {
       AWS.config.update({
+        region: "ap-northeast-2",
         credentials: {
           accessKeyId: process.env.AWS_ACCESS,
           secretAccessKey: process.env.AWS_SECRET,
@@ -112,22 +113,21 @@ export const removeFile = async (url: string) => {
       });
       if (url.includes(BUCKET_NAME)) {
         const parsed = url.split(urlRegex);
-        // url에서 path + file을 끄집어 내어서 결합.
-        const key = parsed[4] + parsed[6];
+        const key = parsed[4].slice(1) + parsed[6];
 
         const result = await new AWS.S3()
           .deleteObject({
             Bucket: BUCKET_NAME,
-            Key: key.slice(1),
+            Key: key,
           })
           .promise();
-          
+
         return {
           ok: true,
         };
       } else {
         // 해당 버킷이 아니면.. 일단 좀 이상하긴해도 큰 문제는 아니니까 ok리턴.
-        
+
         return {
           ok: true,
         };
