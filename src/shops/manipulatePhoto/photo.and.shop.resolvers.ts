@@ -116,7 +116,7 @@ const removePhotoFromShop: Resolver = async (
         ok: true,
       };
     } else {
-      throw new Error("Error: Cannot remove file from s3 bucket.");
+      throw new Error("Error: " + result.error);
     }
   } catch (e) {
     return {
