@@ -8,6 +8,7 @@ const shops: Resolver = ({ id }, { lastId }, { prisma }) =>
     skip: lastId ? 1 : 0,
     include: {
       photos: true,
+      categories: true,
     },
     ...(lastId && { cursor: { id: lastId } }),
     where: { categories: { some: { id } } },

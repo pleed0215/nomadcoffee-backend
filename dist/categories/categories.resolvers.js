@@ -24,14 +24,9 @@ var shops = function (_a, _b, _c) {
 };
 // 입력된 slug와 일치하는 category를 리턴.
 var seeCategory = function (_, _a, _b) {
-    var slug = _a.slug, lastId = _a.lastId;
+    var slug = _a.slug;
     var prisma = _b.prisma;
-    return prisma.category.findFirst({ where: { slug: slug } }).shops(__assign({ orderBy: {
-            createdAt: "desc",
-        }, include: {
-            photos: true,
-            categories: true,
-        }, take: prisma_1.PAGE_SIZE, skip: lastId ? 1 : 0 }, (lastId && { cursor: { id: lastId } })));
+    return prisma.category.findFirst({ where: { slug: slug } });
 };
 // Category type의 totalShops.
 // Category 안에 몇 개의 coffee shop 레코드가 있는지 갯수를 알려줌.
