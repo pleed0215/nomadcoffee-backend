@@ -41,6 +41,26 @@ const seeCategories: Resolver = (_, { lastId }, { prisma }) =>
     orderBy: { name: "asc" },
   });
 
+const searchCategoriesByTerm: Resolver = (_, { term }, { prisma }) =>
+  prisma.category.findMany({
+    where: {
+      OR: [
+        {
+          name: {
+            contains: term,
+            mode: "insensitive",
+          },
+        },
+        {
+          slug: {
+            contains: term,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+  });
+
 export const resolvers: Resolvers = {
   Category: {
     totalShops,
@@ -49,6 +69,7 @@ export const resolvers: Resolvers = {
   Query: {
     seeCategory,
     seeCategories,
+    searchCategoriesByTerm,
   },
 };
 
