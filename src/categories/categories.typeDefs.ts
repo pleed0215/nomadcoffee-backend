@@ -16,7 +16,7 @@ export default gql`
   }
 
   type Query {
-    seeCategory(slug: String!, lastId: Int): [CoffeeShop]
+    seeCategory(slug: String!): Category
     seeCategories(lastId: Int): [Category]
     searchCategoriesByTerm(term: String!): [Category]
   }

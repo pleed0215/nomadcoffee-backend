@@ -14,19 +14,8 @@ const shops: Resolver = ({ id }, { lastId }, { prisma }) =>
   });
 
 // 입력된 slug와 일치하는 category를 리턴.
-const seeCategory: Resolver = (_, { slug, lastId }, { prisma }) =>
-  prisma.category.findFirst({ where: { slug } }).shops({
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      photos: true,
-      categories: true,
-    },
-    take: PAGE_SIZE,
-    skip: lastId ? 1 : 0,
-    ...(lastId && { cursor: { id: lastId } }),
-  });
+const seeCategory: Resolver = (_, { slug }, { prisma }) =>
+  prisma.category.findFirst({ where: { slug } });
 
 // Category type의 totalShops.
 // Category 안에 몇 개의 coffee shop 레코드가 있는지 갯수를 알려줌.
