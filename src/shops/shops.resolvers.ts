@@ -25,7 +25,7 @@ const firstPhotoUrl: Resolver = async ({ id }, _, { prisma }) => {
     .photos({ take: 1 });
   if (photos.length !== 0) {
     return photos[0].url;
-  } else {
+  } else {     
     return null;
   }
 };
