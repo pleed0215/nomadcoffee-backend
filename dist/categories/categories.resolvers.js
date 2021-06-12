@@ -30,6 +30,7 @@ var seeCategory = function (_, _a, _b) {
             createdAt: "desc",
         }, include: {
             photos: true,
+            categories: true,
         }, take: prisma_1.PAGE_SIZE, skip: lastId ? 1 : 0 }, (lastId && { cursor: { id: lastId } })));
 };
 // Category type의 totalShops.
@@ -44,6 +45,28 @@ var seeCategories = function (_, _a, _b) {
     var prisma = _b.prisma;
     return prisma.category.findMany(__assign(__assign({ take: prisma_1.PAGE_SIZE, skip: lastId ? 1 : 0 }, (lastId && { cursor: { id: lastId } })), { orderBy: { name: "asc" } }));
 };
+var searchCategoriesByTerm = function (_, _a, _b) {
+    var term = _a.term;
+    var prisma = _b.prisma;
+    return prisma.category.findMany({
+        where: {
+            OR: [
+                {
+                    name: {
+                        contains: term,
+                        mode: "insensitive",
+                    },
+                },
+                {
+                    slug: {
+                        contains: term,
+                        mode: "insensitive",
+                    },
+                },
+            ],
+        },
+    });
+};
 exports.resolvers = {
     Category: {
         totalShops: totalShops,
@@ -52,6 +75,7 @@ exports.resolvers = {
     Query: {
         seeCategory: seeCategory,
         seeCategories: seeCategories,
+        searchCategoriesByTerm: searchCategoriesByTerm,
     },
 };
 exports.default = exports.resolvers;
